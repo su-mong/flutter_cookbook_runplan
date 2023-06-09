@@ -1,6 +1,36 @@
 import 'package:flutter/material.dart';
 
+import 'model/project_model.dart';
+
 class ProjectScreen extends StatelessWidget {
+  /// ProjectModel 리스트
+  final List<ProjectModel> _projectList = [
+    ProjectModel(
+      projectName: '토익 공부 및 응시',
+      finishedTodoNumber: 7,
+      totalTodoNumber: 20,
+      markerBackgroundColor: Color(0xFFF2F9F9),
+      markerTextColor: Color(0xFF24A19C),
+      markerColorName: 'green',
+    ),
+    ProjectModel(
+      projectName: '헬스 및 건강관리',
+      finishedTodoNumber: 1,
+      totalTodoNumber: 15,
+      markerBackgroundColor: Color(0xFF880000),
+      markerTextColor: Color(0xFFFF0000),
+      markerColorName: 'red',
+    ),
+    ProjectModel(
+      projectName: '토익 공부 및 응시',
+      finishedTodoNumber: 7,
+      totalTodoNumber: 20,
+      markerBackgroundColor: Color(0xFFF2F9F9),
+      markerTextColor: Color(0xFF24A19C),
+      markerColorName: 'green',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,18 +78,25 @@ class ProjectScreen extends StatelessWidget {
           // 16px 떨어뜨리기
           SizedBox(height: 16),
 
-          // 리스트뷰
-          ListView(
+          // 동적 생성이 가능한 리스트뷰
+          ListView.separated(
+            itemCount: _projectList.length, // 리스트의 아이템 갯수 : _projectList의 갯수
             physics: NeverScrollableScrollPhysics(), // Column 안에서 리스트뷰를 쓸 때 필요한 옵션 1. 리스트뷰 스크롤 막음
             shrinkWrap: true, // Column 안에서 리스트뷰를 쓸 때 필요한 옵션 2. Column 안쪽에 리스트뷰를 넣을 때 꼭 필요한 옵션.
-            children: [
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(height: 16);
+            },
+            itemBuilder: (BuildContext context, int index) {
+              // index: 리스트에서 몇 번째에 있는지를 나타내는 값.
+
+              // 리스트의 아이템 하나에 대한 UI (프로젝트 1개)
               // 프로젝트 1개
-              Row(
+              return Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '토익 공부 및 응시  (7/20)',
+                    '${_projectList[index].projectName} (${_projectList[index].finishedTodoNumber} / ${_projectList[index].totalTodoNumber})',
                     style: TextStyle(
                       fontSize: 16,
                       color: Color(0xFF767E8C),
@@ -72,22 +109,22 @@ class ProjectScreen extends StatelessWidget {
                     // padding: EdgeInsets.only(left: 6, right: 6, bottom: 2, top: 2),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Color(0xFFF2F9F9),
+                      color: _projectList[index].markerBackgroundColor,
                     ),
                     child: Center(
                       child: Text(
-                        'green',
+                        _projectList[index].markerColorName,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF24A19C),
+                          color: _projectList[index].markerTextColor,
                           fontWeight: FontWeight.w500, // bold -> w500
                         ),
                       ),
                     ),
                   )
                 ],
-              ),
-            ],
+              );
+            },
           ),
 
           Spacer(), // 간격
